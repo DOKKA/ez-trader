@@ -1,18 +1,57 @@
-<ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Home</ion-title>
-  </ion-navbar>
-</ion-header>
 
-<ion-content padding>
-  <h3>Ionic Menu Starter</h3>
+  <ion-content padding>
+    <ion-slides pager style="height: 40%">
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
+        <ion-slide style="background-color: green">
+          <h2>Slide 1</h2>
+        </ion-slide>
+      
+        <ion-slide style="background-color: blue">
+          <h2>Slide 2</h2>
+        </ion-slide>
+      
+        <ion-slide style="background-color: red">
+          <h2>Slide 3</h2>
+        </ion-slide>
+      
+      </ion-slides>
 
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+<ion-list>
+<ion-item>
+  <p>About to buy 20 ETH for 10 BTC($40.00 USD) <br>
+    at a price of {{getLimitPrice()}} BTC ($10.00 USD)</p>
+</ion-item>
+
+<ion-item>
+  <ion-toggle [(ngModel)]="mode"  item-start float-left></ion-toggle>
+
+  <ion-select [(ngModel)]="base" interface="popover" float-right>
+    <ion-option *ngFor="let o of baseData" [value]="o">{{o}}</ion-option>
+  </ion-select>
+
+  <ion-select [(ngModel)]="coin" interface="popover" float-right >
+    <ion-option *ngFor="let o of coinData" [value]="o">{{o}}</ion-option>
+  </ion-select>
+ 
+</ion-item>
+
+<ion-item>
+  <ion-range min="1" max="100" [(ngModel)]="limitPercentage" color="secondary">
+    <ion-icon range-left small >$</ion-icon>
+    <ion-icon range-right>$</ion-icon>
+  </ion-range>
+</ion-item>
+
+<ion-item>
+  <ion-range min="1" max="100" pin="true" [(ngModel)]="amount" color="secondary">
+    <ion-icon range-left small>%</ion-icon>
+    <ion-icon range-right>%</ion-icon>
+  </ion-range>
+</ion-item>
+</ion-list>
+
+<p>
+  <button ion-button style="width: 47%">Buy</button>
+  <button ion-button float-right style="width: 47%">Fomo Buy</button>
+</p>
 </ion-content>
