@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { HTTP } from '@ionic-native/http';
-import * as Binance from 'binance-api-node';
-
+import { BinanceProvider } from '../../providers/binance/binance';
 
 @Component({
   selector: 'page-home',
@@ -16,35 +15,22 @@ export class HomePage {
 
   baseData: Array<string>;
   coinData: Array<string>;
-  base: string;
-  coin: string;
+  baseCurrency: string;
+  tradeCurrency: string;
   mode: boolean;
   coinList;
   client;
 
-  constructor(public navCtrl: NavController,private http: HTTP) {
+  constructor(public navCtrl: NavController,private http: HTTP, private binanceProvider: BinanceProvider) {
     this.baseData = ['BNB','BTC','ETH','USDT'];
-    this.coinData = ['STRAT','ETH','ICO','XRB','XLM'];
-    this.base = 'BTC';
-    this.coin = 'XLM';
+    this.coinData = [];
+    this.baseCurrency = 'BTC';
+    this.tradeCurrency = 'XLM';
     this.price = .003;
     this.coinList = {};
-    this.client = Binance.default({
-      apiKey: localStorage.getItem('apiKey') || '',
-      apiSecret: localStorage.getItem('apiSecret') || '' 
+    this.binanceProvider.getCoinList().then((coins)=>{
+      this.coinList = coins;
     });
-    this.client.exchangeInfo().then((exchangeInfo)=>{
-      exchangeInfo.symbols.forEach((symbol)=>{
-        var baseCurrency = symbol.quoteAsset;
-        var tradeCurrency = symbol.baseAsset;
-        if (this.coinList[baseCurrency]) {
-            this.coinList[baseCurrency].push(tradeCurrency)
-        } else {
-            this.coinList[baseCurrency] = [tradeCurrency];
-        }
-      });
-    });
-
   }
 
   getLimitPrice =() => {
@@ -57,10 +43,12 @@ export class HomePage {
   }
 
   onBaseSelect =(e)=>{
-    this.coinData = this.coinList[this.base];
+    this.coinData = this.coinList[this.baseCurrency];
   }
+
   onCoinSelect = (e) =>{
-    this.client.dailyStats({ symbol:  this.coin+this.base }).then((data)=>{
+    
+    this.binanceProvider.client.dailyStats({ symbol:  this.tradeCurrency+this.baseCurrency }).then((data)=>{
       this.price = parseFloat(data.askPrice);
     });
   }

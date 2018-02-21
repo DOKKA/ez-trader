@@ -10,6 +10,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {HTTP} from '@ionic-native/http';
 import { KeysPage } from '../pages/keys/keys';
+import { BinanceProvider } from '../providers/binance/binance';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { KeysPage } from '../pages/keys/keys';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     HTTP,
+    BinanceProvider,
   ]
 })
 export class AppModule {}
