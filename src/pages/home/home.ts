@@ -10,6 +10,7 @@ import { BinanceProvider } from '../../providers/binance/binance';
 export class HomePage {
 
   tradePrice: number;
+  basePriceUSDT: number;
   balancePercentage: number;
   limitPercentage: number;
 
@@ -52,6 +53,24 @@ export class HomePage {
     return parseFloat((this.getBaseAmount()/this.getLimitPrice()).toFixed(8));
   }
 
+  getBaseAmountUSDT = () => {
+    return (this.getBaseAmount()*this.basePriceUSDT).toFixed(2);
+  }
+
+  getTradePriceUSDT = () => {
+    return (this.getLimitPrice()*this.basePriceUSDT).toFixed(2);
+  }
+
+  getBaseBalanceUSDT = () => {
+    return (this.baseBalance*this.basePriceUSDT).toFixed(2);
+  }
+
+  getTradeBalanceUSDT = () => {
+    return (this.tradePrice*this.basePriceUSDT*this.tradeBalance).toFixed(2);
+  }
+
+
+
   button1 =(e) => {
     
   }
@@ -65,6 +84,9 @@ export class HomePage {
     this.binanceProvider.getPrice(this.baseCurrency,this.tradeCurrency).then((price)=>{
       this.tradePrice = price;
     });
+    this.binanceProvider.getPrice('USDT',this.baseCurrency).then((price)=>{
+      this.basePriceUSDT = price;
+    })
   }
 
   setBalances =() =>{

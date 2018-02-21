@@ -18,11 +18,11 @@
 
 <ion-list>
 <ion-item>
-  <p>You have {{tradeBalance}} {{tradeCurrency}}($10.00 USD)<br>
-     and {{baseBalance}} {{baseCurrency}}($50.00)<br>
-    You are about to buy {{getTradeAmount()}} {{tradeCurrency}}($10.00 USD)<br>
-     for {{getBaseAmount()}} {{baseCurrency}}($40.00 USD)<br>
-    at a price of {{getLimitPrice()}} {{baseCurrency}}($10.00 USD)</p>
+  <p>You have {{tradeBalance}} {{tradeCurrency}}(${{getTradeBalanceUSDT()}} USD)<br>
+     and {{baseBalance}} {{baseCurrency}}(${{getBaseBalanceUSDT()}})<br>
+    You are about to buy {{getTradeAmount()}} {{tradeCurrency}}<br>
+     for {{getBaseAmount()}} {{baseCurrency}}(${{getBaseAmountUSDT()}} USD)<br>
+    at a price of {{getLimitPrice()}} {{baseCurrency}}(${{getTradePriceUSDT()}} USD)</p>
   </ion-item>
 
 <ion-item>
