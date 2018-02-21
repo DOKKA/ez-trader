@@ -23,13 +23,13 @@
 </ion-item>
 
 <ion-item>
-  <ion-toggle [(ngModel)]="mode"  item-start float-left></ion-toggle>
+  <ion-toggle [(ngModel)]="mode" item-start float-left></ion-toggle>
 
-  <ion-select [(ngModel)]="base" interface="popover" float-right>
+  <ion-select [(ngModel)]="base" (ionChange)="onBaseSelect($event)" interface="popover" float-right style="margin-right:10px;">
     <ion-option *ngFor="let o of baseData" [value]="o">{{o}}</ion-option>
   </ion-select>
 
-  <ion-select [(ngModel)]="coin" interface="popover" float-right >
+  <ion-select [(ngModel)]="coin" (ionChange)="onCoinSelect($event)" interface="popover" float-right >
     <ion-option *ngFor="let o of coinData" [value]="o">{{o}}</ion-option>
   </ion-select>
  
@@ -51,7 +51,7 @@
 </ion-list>
 
 <p>
-  <button ion-button style="width: 47%">Buy</button>
+  <button ion-button (click)="button1($event)" style="width: 47%">Buy</button>
   <button ion-button float-right style="width: 47%">Fomo Buy</button>
 </p>
 </ion-content>

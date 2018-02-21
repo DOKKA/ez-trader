@@ -1,0 +1,30 @@
+<!--
+  Generated template for the KeysPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>keys</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list>
+    <ion-item>
+      <ion-label fixed>API Key</ion-label>
+      <ion-input type="text" value="" [(ngModel)]="apiKey"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>API Secret</ion-label>
+      <ion-input type="text" value=""[(ngModel)]="apiSecret"></ion-input>
+    </ion-item>
+  </ion-list>
+  <button ion-button (click)="saveKeys($event)" block>Save</button>
+
+</ion-content>
