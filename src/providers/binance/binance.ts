@@ -1,6 +1,7 @@
 
 import { Injectable } from '@angular/core';
 import * as Binance from 'binance-api-node';
+import * as _ from 'lodash';
 
 /*
   Generated class for the BinanceProvider provider.
@@ -8,6 +9,12 @@ import * as Binance from 'binance-api-node';
   See https://angular.io/guide/dependency-injection for more info on providers
   and Angular DI.
 */
+
+interface Balance{
+  baseCurrency: number;
+  tradeCurrency: number;
+}
+
 @Injectable()
 export class BinanceProvider {
 
@@ -35,7 +42,17 @@ export class BinanceProvider {
       });
       return coinList;
     });
-    
+  }
+
+  getBalances(baseCurrency: string, tradeCurrency:string):Promise<Balance>{
+    return this.client.accountInfo().then((info)=>{
+      var trade = _.find(info.balances,{asset: tradeCurrency});
+      var base = _.find(info.balances,{asset: baseCurrency});
+      return {
+        baseCurrency: parseFloat(base.free),
+        tradeCurrency: parseFloat(trade.free)
+      };
+    });
   }
 
 }

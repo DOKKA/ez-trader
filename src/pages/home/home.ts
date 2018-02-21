@@ -13,6 +13,9 @@ export class HomePage {
   amount: number;
   limitPercentage: number;
 
+  baseBalance: number;
+  tradeBalance: number;
+
   baseData: Array<string>;
   coinData: Array<string>;
   baseCurrency: string;
@@ -47,7 +50,10 @@ export class HomePage {
   }
 
   onCoinSelect = (e) =>{
-    
+    this.binanceProvider.getBalances(this.baseCurrency,this.tradeCurrency).then((balance)=>{
+      this.baseBalance = balance.baseCurrency;
+      this.tradeBalance = balance.tradeCurrency;
+    });
     this.binanceProvider.client.dailyStats({ symbol:  this.tradeCurrency+this.baseCurrency }).then((data)=>{
       this.price = parseFloat(data.askPrice);
     });

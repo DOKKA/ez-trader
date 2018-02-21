@@ -18,10 +18,12 @@
 
 <ion-list>
 <ion-item>
-  <p>You have 1 ETH($10.00 USD) and 20 BTC($50.00)<br>
-    About to buy 20 ETH for 10 BTC($40.00 USD)<br>
-    at a price of {{getLimitPrice()}} BTC ($10.00 USD)</p>
-</ion-item>
+  <p>You have {{tradeBalance}} {{tradeCurrency}}($10.00 USD)<br>
+     and {{baseBalance}} {{baseCurrency}}($50.00)<br>
+    You are about to buy 1.00059000 {{tradeCurrency}}($10.00 USD)<br>
+     for 1.00059000 {{baseCurrency}}($40.00 USD)<br>
+    at a price of {{getLimitPrice()}} {{baseCurrency}}($10.00 USD)</p>
+  </ion-item>
 
 <ion-item>
   <ion-toggle [(ngModel)]="mode" item-start float-left></ion-toggle>
