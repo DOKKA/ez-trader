@@ -55,4 +55,10 @@ export class BinanceProvider {
     });
   }
 
+  getPrice(baseCurrency:string, tradeCurrency:string):Promise<number>{
+    return this.client.dailyStats({ symbol:  tradeCurrency + baseCurrency }).then((data)=>{
+      return parseFloat(data.lastPrice);
+    });
+  }
+
 }

@@ -9,8 +9,8 @@ import { BinanceProvider } from '../../providers/binance/binance';
 })
 export class HomePage {
 
-  price: number;
-  amount: number;
+  tradePrice: number;
+  balancePercentage: number;
   limitPercentage: number;
 
   baseBalance: number;
@@ -28,17 +28,28 @@ export class HomePage {
     this.baseData = ['BNB','BTC','ETH','USDT'];
     this.coinData = [];
     this.baseCurrency = 'BTC';
-    this.tradeCurrency = 'XLM';
-    this.price = .003;
+    this.tradeCurrency = 'ETH';
+    this.tradePrice = 0;
+    this.limitPercentage = 0;
+    this.balancePercentage = 0;
     this.coinList = {};
+    this.setBalances();
     this.binanceProvider.getCoinList().then((coins)=>{
       this.coinList = coins;
     });
   }
 
   getLimitPrice =() => {
-    let percentage = this.limitPercentage/100+1;
-    return parseFloat((percentage * this.price).toFixed(8));
+    let percentage = 1-this.limitPercentage/100;
+    return parseFloat((percentage * this.tradePrice).toFixed(8));
+  }
+
+  getBaseAmount = () => {
+    return (this.balancePercentage/100)*this.baseBalance;
+  }
+
+  getTradeAmount = () => {
+    return parseFloat((this.getBaseAmount()/this.getLimitPrice()).toFixed(8));
   }
 
   button1 =(e) => {
@@ -50,12 +61,16 @@ export class HomePage {
   }
 
   onCoinSelect = (e) =>{
+    this.setBalances();
+    this.binanceProvider.getPrice(this.baseCurrency,this.tradeCurrency).then((price)=>{
+      this.tradePrice = price;
+    });
+  }
+
+  setBalances =() =>{
     this.binanceProvider.getBalances(this.baseCurrency,this.tradeCurrency).then((balance)=>{
       this.baseBalance = balance.baseCurrency;
       this.tradeBalance = balance.tradeCurrency;
-    });
-    this.binanceProvider.client.dailyStats({ symbol:  this.tradeCurrency+this.baseCurrency }).then((data)=>{
-      this.price = parseFloat(data.askPrice);
     });
   }
 
