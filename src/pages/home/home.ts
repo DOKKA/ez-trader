@@ -21,7 +21,7 @@ export class HomePage {
   coinData: Array<string>;
   baseCurrency: string;
   tradeCurrency: string;
-  mode: boolean;
+  isBuyMode: boolean;
   coinList;
   client;
 
@@ -34,6 +34,7 @@ export class HomePage {
     this.limitPercentage = 0;
     this.balancePercentage = 0;
     this.coinList = {};
+    this.isBuyMode = true;
     this.setBalances();
     this.binanceProvider.getCoinList().then((coins)=>{
       this.coinList = coins;
@@ -46,7 +47,7 @@ export class HomePage {
   }
 
   getBaseAmount = () => {
-    return (this.balancePercentage/100)*this.baseBalance;
+    return parseFloat(((this.balancePercentage/100)*this.baseBalance).toFixed(8));
   }
 
   getTradeAmount = () => {
@@ -69,6 +70,14 @@ export class HomePage {
     return (this.tradePrice*this.basePriceUSDT*this.tradeBalance).toFixed(2);
   }
 
+  getMode = () => {
+    return this.isBuyMode === true ? 'buy' : 'sell';
+  }
+
+  getButton2Text = () => {
+    return this.isBuyMode === true ? 'FOMO Buy' : 'Panic Sell'; 
+  }
+
 
 
   button1 =(e) => {
@@ -84,9 +93,14 @@ export class HomePage {
     this.binanceProvider.getPrice(this.baseCurrency,this.tradeCurrency).then((price)=>{
       this.tradePrice = price;
     });
-    this.binanceProvider.getPrice('USDT',this.baseCurrency).then((price)=>{
-      this.basePriceUSDT = price;
-    })
+    if(this.baseCurrency === 'USDT'){
+      this.basePriceUSDT = 1;
+    } else {
+      this.binanceProvider.getPrice('USDT',this.baseCurrency).then((price)=>{
+        this.basePriceUSDT = price;
+      });
+    }
+
   }
 
   setBalances =() =>{

@@ -18,15 +18,20 @@
 
 <ion-list>
 <ion-item>
-  <p>You have {{tradeBalance}} {{tradeCurrency}}(${{getTradeBalanceUSDT()}} USD)<br>
-     and {{baseBalance}} {{baseCurrency}}(${{getBaseBalanceUSDT()}})<br>
-    You are about to buy {{getTradeAmount()}} {{tradeCurrency}}<br>
-     for {{getBaseAmount()}} {{baseCurrency}}(${{getBaseAmountUSDT()}} USD)<br>
-    at a price of {{getLimitPrice()}} {{baseCurrency}}(${{getTradePriceUSDT()}} USD)</p>
+  <p>You have <b>{{tradeBalance}}</b> {{tradeCurrency}}(${{getTradeBalanceUSDT()}} USD)<br>
+     and <b>{{baseBalance}}</b> {{baseCurrency}}(${{getBaseBalanceUSDT()}})</p>
+
+     <p *ngIf="isBuyMode">You are about to buy <b>{{getTradeAmount()}}</b> {{tradeCurrency}}<br>
+     for <b>{{getBaseAmount()}}</b> {{baseCurrency}}(${{getBaseAmountUSDT()}} USD)<br>
+    at a price of <b>{{getLimitPrice()}}</b> {{tradeCurrency}}/{{baseCurrency}}(${{getTradePriceUSDT()}} USD)</p>
+
+    <p *ngIf="!isBuyMode">You are about to sell <b>{{getBaseAmount()}}</b> {{baseCurrency}}<br>
+      for <b>{{getTradeAmount()}}</b> {{tradeCurrency}} (${{getBaseAmountUSDT()}} USD)<br>
+     at a price of <b>{{getLimitPrice()}}</b> {{tradeCurrency}}/{{baseCurrency}}(${{getTradePriceUSDT()}} USD)</p>
   </ion-item>
 
 <ion-item>
-  <ion-toggle [(ngModel)]="mode" item-start float-left></ion-toggle>
+  <ion-toggle [(ngModel)]="isBuyMode" item-start float-left></ion-toggle>
 
   <ion-select [(ngModel)]="baseCurrency" (ionChange)="onBaseSelect($event)" interface="popover" float-right style="margin-right:10px;">
     <ion-option *ngFor="let o of baseData" [value]="o">{{o}}</ion-option>
@@ -54,7 +59,7 @@
 </ion-list>
 
 <p>
-  <button ion-button (click)="button1($event)" style="width: 47%">Buy</button>
-  <button ion-button float-right style="width: 47%">Fomo Buy</button>
+  <button ion-button (click)="button1($event)" style="width: 47%">{{getMode()}}</button>
+  <button ion-button float-right style="width: 47%">{{getButton2Text()}}</button>
 </p>
 </ion-content>
