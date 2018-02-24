@@ -61,4 +61,13 @@ export class BinanceProvider {
     });
   }
 
+  createBuy(baseCurrency: string, tradeCurrency: string, amount: number, price: number):Promise<any>{
+    return this.client.order({
+      symbol: tradeCurrency+baseCurrency,
+      side: 'BUY',
+      quantity: parseFloat(amount.toFixed(2)),
+      price: price
+    });
+  }
+
 }

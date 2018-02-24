@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { HTTP } from '@ionic-native/http';
 import { BinanceProvider } from '../../providers/binance/binance';
+import { ToastController } from 'ionic-angular';
 
 @Component({
   selector: 'page-home',
@@ -25,7 +26,7 @@ export class HomePage {
   coinList;
   client;
 
-  constructor(public navCtrl: NavController,private http: HTTP, private binanceProvider: BinanceProvider) {
+  constructor(public navCtrl: NavController,private http: HTTP, private binanceProvider: BinanceProvider,private toastCtrl: ToastController) {
     this.baseData = ['BNB','BTC','ETH','USDT'];
     this.coinData = [];
     this.baseCurrency = 'BTC';
@@ -97,10 +98,12 @@ export class HomePage {
     return this.isBuyMode === true ? 'FOMO Buy' : 'Panic Sell'; 
   }
 
-
-
   button1 =(e) => {
-    
+    if(this.isBuyMode){
+      this.binanceProvider.createBuy(this.baseCurrency, this.tradeCurrency,this.getTradeAmount(),this.getLimitPrice()).then((data)=>{
+        this.presentToast(`Bought ${this.tradeCurrency} for ${this.getLimitPrice()}`);
+      });
+    }
   }
 
   onBaseSelect =(e)=>{
@@ -127,6 +130,16 @@ export class HomePage {
       this.baseBalance = balance.baseCurrency;
       this.tradeBalance = balance.tradeCurrency;
     });
+  }
+
+  presentToast=(message:string) => {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'bottom'
+    });
+  
+    toast.present();
   }
 
 }
