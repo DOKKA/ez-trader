@@ -14,6 +14,7 @@ export class HomePage {
   basePriceUSDT: number;
   balancePercentage: number;
   limitPercentage: number;
+  precision: number;
 
   baseBalance: number;
   tradeBalance: number;
@@ -34,6 +35,7 @@ export class HomePage {
     this.tradePrice = 0;
     this.limitPercentage = 0;
     this.balancePercentage = 0;
+    this.precision = 8;
     this.coinList = {};
     this.isBuyMode = true;
     this.setBalances();
@@ -63,9 +65,9 @@ export class HomePage {
 
   getTradeAmount = () => {
     if(this.isBuyMode){
-      return parseFloat((this.getBaseAmount()/this.getLimitPrice()).toFixed(8));
+      return parseFloat((this.getBaseAmount()/this.getLimitPrice()).toFixed(this.precision));
     } else{
-      return parseFloat((this.getBaseAmount()*this.getLimitPrice()).toFixed(8));
+      return parseFloat((this.getBaseAmount()*this.getLimitPrice()).toFixed(this.precision));
     }
   }
 
@@ -102,7 +104,10 @@ export class HomePage {
     if(this.isBuyMode){
       this.binanceProvider.createBuy(this.baseCurrency, this.tradeCurrency,this.getTradeAmount(),this.getLimitPrice()).then((data)=>{
         this.presentToast(`Bought ${this.tradeCurrency} for ${this.getLimitPrice()}`);
-      });
+      }).catch((err)=>{
+        console.log(err)
+        this.presentToast(`Error: ${err.message}`);
+      })
     }
   }
 
@@ -112,6 +117,9 @@ export class HomePage {
 
   onCoinSelect = (e) =>{
     this.setBalances();
+    this.binanceProvider.getPrecision(this.baseCurrency, this.tradeCurrency).then((precision) =>{
+      this.precision = precision;
+    })
     this.binanceProvider.getPrice(this.baseCurrency,this.tradeCurrency).then((price)=>{
       this.tradePrice = price;
     });
