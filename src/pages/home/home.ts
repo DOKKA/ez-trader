@@ -42,20 +42,39 @@ export class HomePage {
   }
 
   getLimitPrice =() => {
-    let percentage = 1-this.limitPercentage/100;
-    return parseFloat((percentage * this.tradePrice).toFixed(8));
+    if(this.isBuyMode){
+      let percentage = 1-this.limitPercentage/100;
+      return parseFloat((percentage * this.tradePrice).toFixed(8));
+    } else {
+      let percentage = (this.limitPercentage/100)+1;
+      return parseFloat((percentage * this.tradePrice).toFixed(8));
+    }
+
   }
 
   getBaseAmount = () => {
-    return parseFloat(((this.balancePercentage/100)*this.baseBalance).toFixed(8));
+    if(this.isBuyMode){
+      return parseFloat(((this.balancePercentage/100)*this.baseBalance).toFixed(8));
+    } else {
+      return parseFloat(((this.balancePercentage/100)*this.tradeBalance).toFixed(8));
+    }
   }
 
   getTradeAmount = () => {
-    return parseFloat((this.getBaseAmount()/this.getLimitPrice()).toFixed(8));
+    if(this.isBuyMode){
+      return parseFloat((this.getBaseAmount()/this.getLimitPrice()).toFixed(8));
+    } else{
+      return parseFloat((this.getBaseAmount()*this.getLimitPrice()).toFixed(8));
+    }
   }
 
   getBaseAmountUSDT = () => {
-    return (this.getBaseAmount()*this.basePriceUSDT).toFixed(2);
+    if(this.isBuyMode){
+      return (this.getBaseAmount()*this.basePriceUSDT).toFixed(2);
+    } else {
+      return (this.getTradeAmount()*this.basePriceUSDT).toFixed(2);
+    }
+    
   }
 
   getTradePriceUSDT = () => {

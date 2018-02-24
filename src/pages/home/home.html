@@ -18,16 +18,16 @@
 
 <ion-list>
 <ion-item>
-  <p>You have <b>{{tradeBalance}}</b> {{tradeCurrency}}(${{getTradeBalanceUSDT()}} USD)<br>
-     and <b>{{baseBalance}}</b> {{baseCurrency}}(${{getBaseBalanceUSDT()}})</p>
+  <p>You have {{tradeBalance}} {{tradeCurrency}}<b>(${{getTradeBalanceUSDT()}} USD)</b><br>
+     and {{baseBalance}} {{baseCurrency}}<b>(${{getBaseBalanceUSDT()}})</b></p>
 
-     <p *ngIf="isBuyMode">You are about to buy <b>{{getTradeAmount()}}</b> {{tradeCurrency}}<br>
-     for <b>{{getBaseAmount()}}</b> {{baseCurrency}}(${{getBaseAmountUSDT()}} USD)<br>
-    at a price of <b>{{getLimitPrice()}}</b> {{tradeCurrency}}/{{baseCurrency}}(${{getTradePriceUSDT()}} USD)</p>
+     <p *ngIf="isBuyMode">You are about to buy {{getTradeAmount()}} {{tradeCurrency}}<br>
+     for {{getBaseAmount()}} {{baseCurrency}}<b>(${{getBaseAmountUSDT()}} USD)</b><br>
+    at a price of {{getLimitPrice()}} {{tradeCurrency}}/{{baseCurrency}}<b>(${{getTradePriceUSDT()}} USD)</b></p>
 
-    <p *ngIf="!isBuyMode">You are about to sell <b>{{getBaseAmount()}}</b> {{baseCurrency}}<br>
-      for <b>{{getTradeAmount()}}</b> {{tradeCurrency}} (${{getBaseAmountUSDT()}} USD)<br>
-     at a price of <b>{{getLimitPrice()}}</b> {{tradeCurrency}}/{{baseCurrency}}(${{getTradePriceUSDT()}} USD)</p>
+    <p *ngIf="!isBuyMode">You are about to sell {{getBaseAmount()}} {{tradeCurrency}}<br>
+      for {{getTradeAmount()}} {{baseCurrency}}<b>(${{getBaseAmountUSDT()}} USD)</b><br>
+     at a price of {{getLimitPrice()}} {{tradeCurrency}}/{{baseCurrency}}<b>(${{getTradePriceUSDT()}} USD)</b></p>
   </ion-item>
 
 <ion-item>
@@ -44,7 +44,7 @@
 </ion-item>
 
 <ion-item>
-  <ion-range min="1" max="100" [(ngModel)]="limitPercentage" color="secondary">
+  <ion-range min="0" max="100" [(ngModel)]="limitPercentage" color="secondary">
     <ion-icon range-left small >$</ion-icon>
     <ion-icon range-right>$</ion-icon>
   </ion-range>
