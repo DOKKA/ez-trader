@@ -41,6 +41,14 @@ export class HomePage {
     this.setBalances();
     this.binanceProvider.getCoinList().then((coins)=>{
       this.coinList = coins;
+      this.coinData = this.coinList[this.baseCurrency];
+    });
+
+    this.binanceProvider.getPrecision(this.baseCurrency, this.tradeCurrency).then((precision) =>{
+      this.precision = precision;
+    });
+    this.binanceProvider.getPrice(this.baseCurrency,this.tradeCurrency).then((price)=>{
+      this.tradePrice = price;
     });
   }
 
@@ -65,9 +73,9 @@ export class HomePage {
 
   getTradeAmount = () => {
     if(this.isBuyMode){
-      return parseFloat((this.getBaseAmount()/this.getLimitPrice()).toFixed(this.precision));
+      return parseFloat((this.getBaseAmount()/this.getLimitPrice()).toFixed(8));
     } else{
-      return parseFloat((this.getBaseAmount()*this.getLimitPrice()).toFixed(this.precision));
+      return parseFloat((this.getBaseAmount()*this.getLimitPrice()).toFixed(8));
     }
   }
 
@@ -102,8 +110,17 @@ export class HomePage {
 
   button1 =(e) => {
     if(this.isBuyMode){
-      this.binanceProvider.createBuy(this.baseCurrency, this.tradeCurrency,this.getTradeAmount(),this.getLimitPrice()).then((data)=>{
-        this.presentToast(`Bought ${this.tradeCurrency} for ${this.getLimitPrice()}`);
+      var tradeAmount = parseFloat(this.getTradeAmount().toFixed(this.precision));
+      this.binanceProvider.createBuy(this.baseCurrency, this.tradeCurrency,tradeAmount,this.getLimitPrice()).then((data)=>{
+        this.presentToast(`Bought ${tradeAmount} ${this.tradeCurrency}`);
+      }).catch((err)=>{
+        console.log(err);
+        this.presentToast(`Error: ${err.message}`);
+      })
+    } else {
+      var baseAmount = parseFloat(this.getBaseAmount().toFixed(this.precision));
+      this.binanceProvider.createSell(this.baseCurrency, this.tradeCurrency,baseAmount,this.getLimitPrice()).then((data)=>{
+        this.presentToast(`Sold ${baseAmount} ${this.tradeCurrency}`);
       }).catch((err)=>{
         console.log(err)
         this.presentToast(`Error: ${err.message}`);
@@ -119,7 +136,7 @@ export class HomePage {
     this.setBalances();
     this.binanceProvider.getPrecision(this.baseCurrency, this.tradeCurrency).then((precision) =>{
       this.precision = precision;
-    })
+    });
     this.binanceProvider.getPrice(this.baseCurrency,this.tradeCurrency).then((price)=>{
       this.tradePrice = price;
     });

@@ -63,7 +63,7 @@ export class BinanceProvider {
 
   getPrecision(baseCurrency:string, tradeCurrency: string):Promise<number>{
     return this.client.exchangeInfo().then((exchangeInfo)=>{ 
-      var symbol = _.find(exchangeInfo.symbols, {symbol: 'ETHBTC'});
+      var symbol = _.find(exchangeInfo.symbols, {symbol: tradeCurrency+baseCurrency});
       var lotSize = _.find(symbol.filters, {filterType: 'LOT_SIZE'});
       return Math.log10(parseFloat(lotSize.minQty))*(-1);
     });
@@ -73,7 +73,16 @@ export class BinanceProvider {
     return this.client.order({
       symbol: tradeCurrency+baseCurrency,
       side: 'BUY',
-      quantity: parseFloat(amount.toFixed(2)),
+      quantity: amount,
+      price: price
+    });
+  }
+
+  createSell(baseCurrency: string, tradeCurrency: string, amount: number, price: number):Promise<any>{
+    return this.client.order({
+      symbol: tradeCurrency+baseCurrency,
+      side: 'SELL',
+      quantity: amount,
       price: price
     });
   }

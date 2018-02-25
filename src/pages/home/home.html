@@ -21,11 +21,11 @@
   <p>You have {{tradeBalance}} {{tradeCurrency}}<b>(${{getTradeBalanceUSDT()}} USD)</b><br>
      and {{baseBalance}} {{baseCurrency}}<b>(${{getBaseBalanceUSDT()}})</b></p>
 
-     <p *ngIf="isBuyMode">You are about to buy {{getTradeAmount()}} {{tradeCurrency}}<br>
+     <p *ngIf="isBuyMode">You are about to buy {{getTradeAmount().toFixed(precision)}} {{tradeCurrency}}<br>
      for {{getBaseAmount()}} {{baseCurrency}}<b>(${{getBaseAmountUSDT()}} USD)</b><br>
     at a price of {{getLimitPrice()}} {{tradeCurrency}}/{{baseCurrency}}<b>(${{getTradePriceUSDT()}} USD)</b></p>
 
-    <p *ngIf="!isBuyMode">You are about to sell {{getBaseAmount()}} {{tradeCurrency}}<br>
+    <p *ngIf="!isBuyMode">You are about to sell {{getBaseAmount().toFixed(precision)}} {{tradeCurrency}}<br>
       for {{getTradeAmount()}} {{baseCurrency}}<b>(${{getBaseAmountUSDT()}} USD)</b><br>
      at a price of {{getLimitPrice()}} {{tradeCurrency}}/{{baseCurrency}}<b>(${{getTradePriceUSDT()}} USD)</b></p>
   </ion-item>
