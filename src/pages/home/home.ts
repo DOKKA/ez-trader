@@ -26,6 +26,7 @@ export class HomePage {
   isBuyMode: boolean;
   coinList;
   client;
+  closeWSFn: any;
 
   constructor(public navCtrl: NavController,private http: HTTP, private binanceProvider: BinanceProvider,private toastCtrl: ToastController) {
     this.baseData = ['BNB','BTC','ETH','USDT'];
@@ -140,6 +141,12 @@ export class HomePage {
     this.binanceProvider.getPrice(this.baseCurrency,this.tradeCurrency).then((price)=>{
       this.tradePrice = price;
     });
+    if( typeof this.closeWSFn === 'function'){
+      this.closeWSFn();
+    }
+    this.closeWSFn = this.binanceProvider.ticker(this.baseCurrency,this.tradeCurrency, (data)=>{
+      this.tradePrice = parseFloat(data.a);
+    });
     if(this.baseCurrency === 'USDT'){
       this.basePriceUSDT = 1;
     } else {
@@ -147,7 +154,6 @@ export class HomePage {
         this.basePriceUSDT = price;
       });
     }
-
   }
 
   setBalances =() =>{

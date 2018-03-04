@@ -19,6 +19,7 @@ interface Balance{
 export class BinanceProvider {
 
   client: any;
+  closeFn: any;
 
   constructor() {
     console.log('Hello BinanceProvider Provider');
@@ -85,6 +86,23 @@ export class BinanceProvider {
       quantity: amount,
       price: price
     });
+  }
+
+  ticker(baseCurrency: string, tradeCurrency: string, cb:any){
+    var currencyPair = (tradeCurrency + baseCurrency).toLowerCase();
+    var socket = new WebSocket(`wss://stream.binance.com:9443/ws/${currencyPair}@ticker`);
+    socket.onmessage = (event) =>{
+      var data = JSON.parse(event.data)
+      if(data.e === '24hrTicker'){
+        cb(data)
+      }
+    }
+    return function(){
+      if(socket.readyState !== socket.CLOSED){
+        socket.close();
+      }
+      
+    }
   }
 
 }
